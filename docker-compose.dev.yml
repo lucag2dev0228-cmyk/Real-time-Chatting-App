@@ -17,7 +17,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "6380:6379"
     volumes:
       - redis_data:/data
 
@@ -29,7 +29,8 @@ services:
     command: >
       sh -c "
         python manage.py migrate &&
-        python manage.py runserver 0.0.0.0:8000
+        python manage.py collectstatic --noinput &&
+        daphne -b 0.0.0.0 -p 8000 chat_app.asgi:application
       "
     environment:
       - DEBUG=True
@@ -42,28 +43,12 @@ services:
       - SECRET_KEY=dev-secret-key
       - ALLOWED_HOSTS=localhost,127.0.0.1,backend
     ports:
-      - "8000:8000"
+      - "8001:8000"
     volumes:
       - ./backend:/app
     depends_on:
       - db
       - redis
-
-  # Frontend React App (Development)
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    environment:
-      - REACT_APP_API_URL=http://localhost:8000
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    depends_on:
-      backend:
-        condition: service_healthy
 
 volumes:
   postgres_data:

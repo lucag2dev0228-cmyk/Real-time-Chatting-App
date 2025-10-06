@@ -24,8 +24,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY . .
 
-# Create logs directory
-RUN mkdir -p logs
+# Create logs directory with proper permissions
+RUN mkdir -p logs && chmod 755 logs
 
 # Collect static files
 RUN python manage.py collectstatic --noinput

@@ -135,26 +135,3 @@ class RedisService:
             return []
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

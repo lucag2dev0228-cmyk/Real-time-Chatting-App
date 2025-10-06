@@ -24,9 +24,11 @@ interface AuthContextType {
 
 interface RegisterData {
   email: string;
+  username: string;
   password: string;
   first_name: string;
   last_name: string;
+  password_confirm: string;
 }
 
 interface AuthProviderProps {
@@ -115,7 +117,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.success('Registration successful!');
       return { success: true };
     } catch (error: any) {
-      const message = error.response?.data?.error || 'Registration failed';
+      console.error('Registration error:', error.response?.data);
+      const message = error.response?.data?.error || error.response?.data?.detail || 'Registration failed';
       toast.error(message);
       return { success: false, error: message };
     }

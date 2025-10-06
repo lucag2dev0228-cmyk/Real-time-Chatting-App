@@ -43,23 +43,3 @@ def TokenAuthMiddlewareStack(inner):
     return TokenAuthMiddleware(AuthMiddlewareStack(inner))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

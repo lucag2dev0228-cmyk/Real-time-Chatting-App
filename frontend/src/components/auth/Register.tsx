@@ -62,6 +62,8 @@ const Register: React.FC = () => {
       newErrors.username = 'Username is required';
     } else if (formData.username.length < 3) {
       newErrors.username = 'Username must be at least 3 characters';
+    } else if (!/^[a-zA-Z0-9@.+_-]+$/.test(formData.username)) {
+      newErrors.username = 'Username can only contain letters, numbers, and @/./+/-/_ characters';
     }
 
     if (!formData.first_name) {
@@ -139,6 +141,7 @@ const Register: React.FC = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
+                placeholder="e.g., testuser123"
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
                   errors.username ? 'border-red-300' : 'border-gray-300'
                 }`}
@@ -146,6 +149,9 @@ const Register: React.FC = () => {
                 disabled={loading}
               />
               {errors.username && <div className="mt-1 text-sm text-red-600">{errors.username}</div>}
+              <div className="mt-1 text-xs text-gray-500">
+                Only letters, numbers, and @/./+/-/_ characters allowed
+              </div>
             </div>
             
             <div className="grid grid-cols-2 gap-4">

@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database for Testing
+  test-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: chat_app_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Redis for Testing
+  test-redis:
+    image: redis:7-alpine
+    ports:
+      - "6381:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Backend Django API for Testing
+  test-backend:
+    build: ./backend
+    command: >
+      sh -c "
+        python manage.py migrate --settings=chat_app.test_settings &&
+        python manage.py runserver 0.0.0.0:8000 --settings=chat_app.test_settings
+      "
+    environment:
+      - DEBUG=False
+      - DB_NAME=chat_app_test
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_HOST=test-db
+      - DB_PORT=5432
+      - REDIS_URL=redis://test-redis:6379/15
+      - SECRET_KEY=test-secret-key
+      - ALLOWED_HOSTS=localhost,127.0.0.1,test-backend
+      - DJANGO_SETTINGS_MODULE=chat_app.test_settings
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      test-db:
+        condition: service_healthy
+      test-redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Frontend for Testing
+  test-frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    command: >
+      sh -c "
+        npm install &&
+        npm test -- --watchAll=false --coverage
+      "
+    environment:
+      - REACT_APP_API_URL=http://localhost:8002
+      - NODE_ENV=test
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      test-backend:
+        condition: service_healthy

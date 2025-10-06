@@ -2,9 +2,9 @@
 
 A modern, scalable real-time chat application built with Django, React, Redis, and WebSockets. This application provides instant messaging capabilities with user authentication, conversation management, and real-time message delivery.
 
-## 🚀 Features
+## Features
 
-### ✅ Core Features Implemented
+### Core Features Implemented
 
 #### **Real-time Messaging**
 - **WebSocket Integration**: Real-time bidirectional communication using Django Channels
@@ -59,7 +59,7 @@ A modern, scalable real-time chat application built with Django, React, Redis, a
 - **Authentication Flow**: Complete login/register/logout flow
 - **Error Handling**: Comprehensive error handling and user feedback
 
-### 🏗️ Architecture
+### Architecture
 
 #### **Backend Architecture**
 ```
@@ -88,7 +88,7 @@ React Application
 3. **Message History**: Frontend → REST API → PostgreSQL (on page load/refresh)
 4. **User Status**: WebSocket → Redis → All connected clients
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Backend
 - **Django 4.2.7**: Web framework
@@ -115,7 +115,7 @@ React Application
 - **Health checks**: Container health monitoring
 - **Volume management**: Persistent data storage
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Real-time Chat App/
@@ -154,7 +154,7 @@ Real-time Chat App/
 └── README.md               # This file
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Docker and Docker Compose
@@ -165,16 +165,14 @@ Real-time Chat App/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone git@github.com:lucag2dev0228-cmyk/Real-time-Chat-App.git
    cd Real-time-Chat-App
    ```
 
 2. **Start the application**
    ```bash
-   # For development
-   ./start-local.sh
    
-   # Or manually with Docker Compose
+   # manually with Docker Compose
    docker-compose up -d
    ```
 
@@ -217,7 +215,7 @@ Real-time Chat App/
    docker run -d -p 5432:5432 -e POSTGRES_DB=chat_app -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password postgres:15-alpine
    ```
 
-## 🔧 Configuration
+## Configuration
 
 Create a `.env` file in the backend directory:
 
@@ -246,18 +244,13 @@ Create a `.env` file in the frontend directory:
 REACT_APP_API_URL=http://localhost:8001
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Running Tests
 
 ```bash
 # Backend tests
-cd backend
-python manage.py test
-
-# Frontend tests
-cd frontend
-npm test
+./run_test.sh
 ```
 
 ### Test Coverage
@@ -269,7 +262,7 @@ The application includes comprehensive test coverage for:
 - API rate limiting
 - Error handling scenarios
 
-## 📊 Monitoring & Logging
+## Monitoring & Logging
 
 ### Log Files
 - `backend/logs/django.log`: General Django application logs
@@ -292,91 +285,3 @@ The application includes comprehensive test coverage for:
 - Backend health: `GET /api/health/`
 - Database connectivity: Automatic health checks
 - Redis connectivity: Automatic health checks
-
-## 🚀 Deployment
-
-### Production Deployment
-
-1. **Environment Setup**
-   ```bash
-   # Set production environment variables
-   export DEBUG=False
-   export SECRET_KEY=your-production-secret-key
-   export ALLOWED_HOSTS=your-domain.com,www.your-domain.com
-   ```
-
-2. **Build and Deploy**
-   ```bash
-   docker-compose -f docker-compose.yml up -d
-   ```
-
-3. **Database Migrations**
-   ```bash
-   docker-compose exec backend python manage.py migrate
-   docker-compose exec backend python manage.py collectstatic --noinput
-   ```
-
-### Cloud Deployment Options
-
-The application is ready for deployment on:
-- **Heroku**: Use the provided Dockerfile and Procfile
-- **AWS ECS**: Container-based deployment
-- **Google Cloud Run**: Serverless container deployment
-- **Azure Container Instances**: Container deployment
-- **DigitalOcean App Platform**: Platform-as-a-Service deployment
-
-## 🔒 Security Features
-
-- **Token-based Authentication**: Secure API access
-- **Rate Limiting**: Protection against abuse
-- **Input Validation**: Comprehensive data validation
-- **CORS Configuration**: Controlled cross-origin access
-- **SQL Injection Protection**: Django ORM protection
-- **XSS Protection**: Built-in Django security features
-
-## 📈 Performance Features
-
-- **Redis Caching**: Fast message retrieval
-- **Database Optimization**: Efficient queries and indexing
-- **WebSocket Connection Pooling**: Efficient connection management
-- **Message TTL**: Automatic cleanup of old data
-- **Pagination**: Efficient data loading
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Troubleshooting
-
-### Common Issues
-
-1. **WebSocket Connection Failed**
-   - Check if Redis is running
-   - Verify WebSocket URL format
-   - Check authentication token
-
-2. **Database Connection Error**
-   - Verify PostgreSQL is running
-   - Check database credentials
-   - Ensure database exists
-
-3. **Rate Limit Exceeded**
-   - Wait for the rate limit window to reset
-   - Check rate limiting configuration
-   - Consider increasing limits for development
-
-### Getting Help
-
-- Check the logs in `backend/logs/`
-- Review the WebSocket troubleshooting guide
-- Open an issue on GitHub
-
-**Built with ❤️ using Django, React, Redis, and WebSockets**
